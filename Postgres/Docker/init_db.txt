@@ -7,7 +7,7 @@ docker run --rm --name=myContainer --env="POSTGRES_PASSWORD=postgres1" --publish
 #su postgres
 #psql
 #CREATE DATABASE mydb;
-#\c mydb;
+#\connect mydb;
 #create schema myschema;
 
 #docker ps -q

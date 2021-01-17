@@ -1,0 +1,39 @@
+#run db in docker
+docker run --rm --name=myContainer1 --env="POSTGRES_PASSWORD=postgres1" --publish 5433:5432 -d postgres
+
+#run db console
+docker exec -it myContainer1 bash
+su postgres
+psql
+
+#create database
+create database mybase;
+
+#connect to database by postgres user
+\connect mybase postgres;
+
+#create schema in database
+create schema schema1;
+
+#create table
+create table schema1.family (id serial, name varchar);
+
+#set system parameters for logical replication
+alter system set wal_level = logical;
+
+#restart db service
+\q
+exit
+exit
+docker restart myContainer
+
+#run db console
+docker exec -it myContainer1 bash
+su postgres
+psql
+
+#connect to database by postgres user
+\connect mybase postgres;
+
+#subscribe publication
+create subscription subscription_family_data connection 'host=localhost port=5432 replication=database dbname=mybase user=postgres password=postgres1' publication family_data;

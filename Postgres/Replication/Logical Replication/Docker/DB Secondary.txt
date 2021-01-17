@@ -1,6 +1,9 @@
 #run db in docker
 docker run --rm --name=myContainer1 --env="POSTGRES_PASSWORD=postgres1" --publish 5433:5432 -d postgres
 
+#connect to network
+docker network connect test_network myContainer1
+
 #run db console
 docker exec -it myContainer1 bash
 su postgres
@@ -25,7 +28,7 @@ alter system set wal_level = logical;
 \q
 exit
 exit
-docker restart myContainer
+docker restart myContainer1
 
 #run db console
 docker exec -it myContainer1 bash
@@ -36,4 +39,4 @@ psql
 \connect mybase postgres;
 
 #subscribe publication
-create subscription subscription_family_data connection 'host=localhost port=5432 replication=database dbname=mybase user=postgres password=postgres1' publication family_data;
+create subscription subscription_family_data connection 'host=myContainer port=5432 replication=database dbname=mybase user=postgres password=postgres1' publication family_data;

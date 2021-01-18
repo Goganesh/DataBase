@@ -31,11 +31,20 @@ insert into schema1.family(name) values ('Georgy'),('David'),('Lyubov');
 #set system parameters for logical replication
 alter system set wal_level = logical;
 
-#publish data replication for table
-create publication family_data for table schema1.family;
-
 #restart db service
 \q
 exit
 exit
 docker restart myContainer
+
+#run db console
+docker exec -it myContainer bash
+su postgres
+psql
+
+#connect to database
+\connect mybase postgres;
+
+#publish data replication for table
+create publication family_data for table schema1.family;
+

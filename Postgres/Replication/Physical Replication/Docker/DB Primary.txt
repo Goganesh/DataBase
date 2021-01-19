@@ -1,0 +1,32 @@
+#run db in docker
+docker pull postgres
+docker run --rm --name=myContainer --env="POSTGRES_PASSWORD=postgres1" --publish 5432:5432 -d postgres
+
+#create network 
+docker network create test_network
+
+#connect to network
+docker network connect test_network myContainer
+
+#run db console
+docker exec -it myContainer bash
+su postgres
+psql
+
+#create user for replication
+create user replicator with replication encrypted password 'mypass';
+
+#create database
+create database mybase;
+
+#connect to database
+\connect mybase postgres;
+
+#create schema in database
+create schema schema1;
+
+#create table
+create table schema1.family (id serial, name varchar);
+
+#insert data into table
+insert into schema1.family(name) values ('Georgy'),('David'),('Lyubov');

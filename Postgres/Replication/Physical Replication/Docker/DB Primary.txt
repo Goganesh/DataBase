@@ -8,9 +8,10 @@ docker network create test_network
 #connect to network
 docker network connect test_network myContainer
 
-#run db console
+#run db console and configurate replicator address
 docker exec -it myContainer bash
 su postgres
+echo "host mybase replicator myContainer1/5433 trust" >> $PGDATA/pg_hba.conf
 psql
 
 #create user for replication

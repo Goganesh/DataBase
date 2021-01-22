@@ -1,18 +1,15 @@
-#run db in docker
-docker pull postgres
-docker run --rm --name=myContainer --env="POSTGRES_PASSWORD=postgres1" --publish 5432:5432 -d postgres
-
 #create network 
 docker network create test_network
 
-#connect to network
-docker network connect test_network myContainer
+#run db in docker
+docker pull postgres
+docker run --rm --name=myContainer --env="POSTGRES_PASSWORD=postgres1" --network=test_network --publish 5432:5432 -d postgres
 
 #run db console and configurate replicator address
 docker exec -it myContainer bash
 su postgres
-echo "host mybase replicator myContainer1/5433 trust" >> $PGDATA/pg_hba.conf
 psql
+alter system set listen_addresses to '*';
 
 #create user for replication
 create user replicator with replication encrypted password 'mypass';
@@ -31,3 +28,11 @@ create table schema1.family (id serial, name varchar);
 
 #insert data into table
 insert into schema1.family(name) values ('Georgy'),('David'),('Lyubov');
+
+#
+\q
+exit
+echo "host replication replicator myContainer1.test_network md5" >> $PGDATA/pg_hba.conf
+exit
+docker restart myContainer
+

@@ -1,13 +1,9 @@
 #run db in docker
-docker run --rm --name=myContainer1 --env="POSTGRES_PASSWORD=postgres1" --network=test_network --publish 5433:5432 -d postgres
+docker run --rm -v pg2_data:/var/lib/postgresql/data --name=myContainer1 --env="POSTGRES_PASSWORD=postgres1" --network=test_network --publish 5433:5432 -d postgres
 
 #run db console
 docker exec -it myContainer1 bash
 su postgres
-cd /var/lib/postgresql/data
-pg_ctl stop
-cd ..
-rmdir data
 
 #create base backup and start replication
-pg_basebackup --host=myContainer --port=5432 --username=replicator --pgdata=$PGDATA --format=plain -Xs --progress --write-recovery-conf
+pg_basebackup --host=myContainer --port=5432 --username=replicator --pgdata=/var/lib/postgresql/data --format=plain -Xs --progress --write-recovery-conf

@@ -1,0 +1,5 @@
+#running docker compose (execute from docker-compose file directory)
+docker-compose up -d otusdb
+
+#enter into mysql
+docker-compose exec otusdb mysql -u root -p12345 otus

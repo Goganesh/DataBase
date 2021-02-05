@@ -8,9 +8,13 @@ services:
     command:
       --init-file /init.sql
     volumes:
+      - data:/var/lib/mysql
       - ./init.sql:/init.sql
       - ./custom.conf:/etc/mysql/conf.d
     expose:
       - "3306"
     ports:
       - "3309:3306"
+
+volumes:
+  data:

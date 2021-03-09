@@ -10,6 +10,7 @@ services:
     volumes:
       - ./init.sql:/init.sql
       - ./custom.conf:/etc/mysql/conf.d
+      - ./some_data.csv:/some_data.csv
     expose:
       - "3306"
     ports:

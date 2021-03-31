@@ -1,5 +1,5 @@
 #run instance
-docker run -d --name=myContainer --env="MYSQL_ROOT_PASSWORD=12345" --publish 3306:3306 mysql:8.0.15
-docker exec -it myContainer bash
+docker run -d --name=myContainer1 --env="MYSQL_ROOT_PASSWORD=12345" --publish 3306:3306 mysql:8.0.15
+docker exec -it myContainer1 bash
 mysql -u root -p 
 use mysql

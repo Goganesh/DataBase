@@ -1,3 +1,6 @@
+--ПОЛНОТЕКСТОВЫЙ ПОИСК
+select * from LOTS where match (name, description) against('Gipsy');
+
 --ПОИСК ЛОТОВ ФАБРИКИ ЛФЗ
 SELECT *
 FROM LOTS L
